@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build and publish plugin zip
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build installable zip
+        run: |
+          SLUG=apparelhub-shipping
+          mkdir -p "build/${SLUG}"
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='build' \
+            --exclude='vendor' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='*.zip' \
+            --exclude='composer.json' \
+            --exclude='composer.lock' \
+            --exclude='phpcs.xml.dist' \
+            --exclude='.gitignore' \
+            --exclude='.distignore' \
+            ./ "build/${SLUG}/"
+          cd build && zip -r "../${SLUG}.zip" "${SLUG}"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: apparelhub-shipping.zip
+          generate_release_notes: true

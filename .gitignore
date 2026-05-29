@@ -1,0 +1,18 @@
+# Dependencies
+/vendor/
+/node_modules/
+composer.lock
+
+# Build artifacts
+/build/
+/dist/
+*.zip
+
+# Editor / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Logs
+*.log
