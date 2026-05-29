@@ -26,10 +26,20 @@ define( 'APPARELHUB_SHIPPING_PATH', plugin_dir_path( __FILE__ ) );
 define( 'APPARELHUB_SHIPPING_URL', plugin_dir_url( __FILE__ ) );
 define( 'APPARELHUB_SHIPPING_MIN_WC', '7.0' );
 
-// Default ApparelHub API root. The plugin appends the service path
-// (/agents/v1/service/woocommerce/...) to whatever root the merchant configures.
+// Default ApparelHub API root. The plugin appends the integration path
+// (/integrations/woocommerce/...) to whatever root the merchant configures.
+//
+// IMPORTANT: this is a PUBLIC, per-store-token-authed endpoint. It is NOT the
+// /agents/v1 agent API, which is gated two ways that would break this plugin:
+//   1. a membership-tier feature check (api_access) that 403s merchants who
+//      are not on an API-enabled plan, and
+//   2. AWS API Gateway x-api-key enforcement (a shared secret) that is unsafe
+//      to ship in open-source code.
+// The per-store shipping token (sent in the header below) is the only
+// credential, mirroring how the inbound webhook endpoints authenticate. That
+// makes this work for merchants on ANY tier and keeps the plugin secret-free.
 define( 'APPARELHUB_SHIPPING_DEFAULT_BASE_URL', 'https://api.apparelhub.ai' );
-define( 'APPARELHUB_SHIPPING_API_PREFIX', '/agents/v1/service/woocommerce' );
+define( 'APPARELHUB_SHIPPING_API_PREFIX', '/integrations/woocommerce' );
 
 // Header the plugin sends the per-store shipping token in. Backend resolves
 // the WooCommerce integration from this token (least privilege).
