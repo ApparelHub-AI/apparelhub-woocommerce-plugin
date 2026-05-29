@@ -6,7 +6,7 @@ Tested up to: 6.7
 Requires PHP: 7.4
 WC requires at least: 7.0
 WC tested up to: 9.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ The plugin shows a configurable flat fallback rate so the customer can still che
 In your ApparelHub dashboard, under your store's shipping settings. The plugin reads those rules at checkout.
 
 == Changelog ==
+
+= 1.0.1 =
+* Point the shipping endpoints at the public per-store-token path so they work for merchants on any plan (the previous path required an API-enabled tier).
 
 = 1.0.0 =
 * Initial release: live Printful rates and flat Printify rate at WooCommerce checkout, with a flat fallback.

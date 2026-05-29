@@ -3,7 +3,7 @@
  * Plugin Name:       ApparelHub Shipping for WooCommerce
  * Plugin URI:        https://github.com/ApparelHub-AI/apparelhub-woocommerce-plugin
  * Description:       Live shipping rates at checkout for ApparelHub products. Printful items are auto calculated from live rates; Printify items use a flat rate you configure in ApparelHub. A configurable flat fallback keeps checkout working if the rate service is briefly unreachable.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            ApparelHub
  * Author URI:        https://apparelhub.ai
  * License:           GPL-2.0-or-later
@@ -20,7 +20,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'APPARELHUB_SHIPPING_VERSION', '1.0.0' );
+define( 'APPARELHUB_SHIPPING_VERSION', '1.0.1' );
 define( 'APPARELHUB_SHIPPING_FILE', __FILE__ );
 define( 'APPARELHUB_SHIPPING_PATH', plugin_dir_path( __FILE__ ) );
 define( 'APPARELHUB_SHIPPING_URL', plugin_dir_url( __FILE__ ) );
@@ -29,15 +29,14 @@ define( 'APPARELHUB_SHIPPING_MIN_WC', '7.0' );
 // Default ApparelHub API root. The plugin appends the integration path
 // (/integrations/woocommerce/...) to whatever root the merchant configures.
 //
-// IMPORTANT: this is a PUBLIC, per-store-token-authed endpoint. It is NOT the
-// /agents/v1 agent API, which is gated two ways that would break this plugin:
-//   1. a membership-tier feature check (api_access) that 403s merchants who
-//      are not on an API-enabled plan, and
-//   2. AWS API Gateway x-api-key enforcement (a shared secret) that is unsafe
-//      to ship in open-source code.
+// IMPORTANT: this is a PUBLIC, per-store-token-authed endpoint, NOT the
+// /agents/v1 agent API. The agent API is gated two ways that would break this
+// plugin for normal merchants: a membership-tier check (api_access) that 403s
+// merchants who are not on an API-enabled plan, and AWS API Gateway x-api-key
+// enforcement, which is a shared secret unsafe to ship in open-source code.
 // The per-store shipping token (sent in the header below) is the only
-// credential, mirroring how the inbound webhook endpoints authenticate. That
-// makes this work for merchants on ANY tier and keeps the plugin secret-free.
+// credential here, mirroring how the inbound webhook endpoints authenticate,
+// so it works for merchants on any tier and keeps the plugin secret-free.
 define( 'APPARELHUB_SHIPPING_DEFAULT_BASE_URL', 'https://api.apparelhub.ai' );
 define( 'APPARELHUB_SHIPPING_API_PREFIX', '/integrations/woocommerce' );
 
