@@ -16,11 +16,12 @@ delete_option( 'apparelhub_shipping_token' );
 
 global $wpdb;
 
-// Remove cached rate transients (apparelhub_ship_*).
-$like         = $wpdb->esc_like( '_transient_apparelhub_ship_' ) . '%';
-$like_timeout = $wpdb->esc_like( '_transient_timeout_apparelhub_ship_' ) . '%';
+// Remove cached rate transients (apparelhub_ship_*). Prefixed to satisfy the
+// global-variable naming rule (uninstall.php runs in the global scope).
+$apparelhub_shipping_like         = $wpdb->esc_like( '_transient_apparelhub_ship_' ) . '%';
+$apparelhub_shipping_like_timeout = $wpdb->esc_like( '_transient_timeout_apparelhub_ship_' ) . '%';
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery
-$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like ) );
-$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $like_timeout ) );
+$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $apparelhub_shipping_like ) );
+$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $apparelhub_shipping_like_timeout ) );
 // phpcs:enable WordPress.DB.DirectDatabaseQuery

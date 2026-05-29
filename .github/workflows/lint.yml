@@ -32,8 +32,5 @@ jobs:
           tools: composer
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
-      - name: Run PHPCS
-        run: vendor/bin/phpcs -q
-        # Style warnings should not block the build on day one. Errors are
-        # still reported in the run output for contributors to address.
-        continue-on-error: true
+      - name: Run PHPCS (errors gate the build; warnings are reported only)
+        run: vendor/bin/phpcs -q --runtime-set ignore_warnings_on_exit 1

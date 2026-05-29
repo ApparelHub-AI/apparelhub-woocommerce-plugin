@@ -75,9 +75,9 @@ class ApparelHub_Shipping_Api_Client {
 	 */
 	private function headers() {
 		return array(
-			'Content-Type'                       => 'application/json',
-			'Accept'                             => 'application/json',
-			APPARELHUB_SHIPPING_TOKEN_HEADER     => $this->token,
+			'Content-Type'                   => 'application/json',
+			'Accept'                         => 'application/json',
+			APPARELHUB_SHIPPING_TOKEN_HEADER => $this->token,
 		);
 	}
 
