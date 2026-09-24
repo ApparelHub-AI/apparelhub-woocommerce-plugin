@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       ApparelHub Shipping for WooCommerce
+ * Plugin Name:       ApparelHub Shipping
  * Plugin URI:        https://github.com/ApparelHub-AI/apparelhub-woocommerce-plugin
  * Description:       Live shipping rates at checkout for ApparelHub products. Printful items are auto calculated from live rates; Printify items use a flat rate you configure in ApparelHub. A configurable flat fallback keeps checkout working if the rate service is briefly unreachable.
  * Version:           1.0.2

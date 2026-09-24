@@ -1,4 +1,4 @@
-# ApparelHub Shipping for WooCommerce
+# ApparelHub Shipping
 
 Live shipping rates at checkout for stores that sell [ApparelHub](https://apparelhub.ai) products through WooCommerce.
 

@@ -1,4 +1,4 @@
-=== ApparelHub Shipping for WooCommerce ===
+=== ApparelHub Shipping ===
 Contributors: apparelhub
 Tags: woocommerce, shipping, print on demand, printful, printify
 Requires at least: 6.0
@@ -115,6 +115,7 @@ Yes. The per-provider logic applies to whichever provider your products come fro
 * Document the ApparelHub API connection in full, including exactly what data is sent and when.
 * Refresh tested-up-to versions for current WordPress and WooCommerce.
 * Expand the installation steps and FAQ.
+* Rename the plugin to ApparelHub Shipping.
 
 = 1.0.1 =
 * Point the shipping endpoints at the public per-store-token path so they work for merchants on any plan (the previous path required an API-enabled tier).
