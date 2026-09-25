@@ -112,6 +112,7 @@ Yes. The per-provider logic applies to whichever provider your products come fro
 == Changelog ==
 
 = 1.0.2 =
+* Fix: items ApparelHub could not match to one of its products were quoted free shipping. They are now charged the flat fallback rate, and the unmatched SKUs are written to the debug log so you can correct them.
 * Document the ApparelHub API connection in full, including exactly what data is sent and when.
 * Refresh tested-up-to versions for current WordPress and WooCommerce.
 * Expand the installation steps and FAQ.
@@ -126,7 +127,7 @@ Yes. The per-provider logic applies to whichever provider your products come fro
 == Upgrade Notice ==
 
 = 1.0.2 =
-Documentation and compatibility update. No functional changes and no action needed.
+Fixes free shipping being quoted for products ApparelHub could not match. Recommended for all users.
 
 = 1.0.1 =
 Fixes rate requests for merchants who are not on an API-enabled plan. Recommended for all users.
