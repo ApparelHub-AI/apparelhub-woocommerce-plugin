@@ -168,6 +168,31 @@ class ApparelHub_Shipping_Method extends WC_Shipping_Method {
 			'apparelhub_fallback_used' => ! empty( $result['fallback_used'] ),
 		);
 
+		// Items ApparelHub could not match to one of its products come back in
+		// unmapped_skus and contribute nothing to the quoted total. Charging
+		// the quote as-is would ship them free (a cart of only unmatched items
+		// quoted $0), so price them at the flat fallback instead. Never cheaper
+		// than before, and logged so the merchant can find the bad SKU.
+		$unmapped_qty = $this->unmapped_quantity( $items, $result );
+		if ( $unmapped_qty > 0 ) {
+			$unmapped = array_values( array_unique( array_map( 'strval', (array) $result['unmapped_skus'] ) ) );
+			$mapped   = $total_qty - $unmapped_qty;
+			if ( $mapped <= 0 ) {
+				$cost = $this->fallback_cost( $total_qty );
+			} else {
+				$cost += $this->fallback_cost( $unmapped_qty );
+			}
+			$meta['apparelhub_fallback_used'] = true;
+			$meta['apparelhub_unmapped_skus'] = $unmapped;
+			$this->log(
+				sprintf(
+					'ApparelHub did not recognize SKU(s) %s (%d item(s)); charged the flat fallback for them. Check these products use their ApparelHub SKU.',
+					implode( ', ', $unmapped ),
+					$unmapped_qty
+				)
+			);
+		}
+
 		$this->add_apparelhub_rate( $cost, $package, $meta );
 
 		if ( $cache_min > 0 ) {
@@ -254,6 +279,44 @@ class ApparelHub_Shipping_Method extends WC_Shipping_Method {
 	}
 
 	/**
+	 * The flat fallback price for a number of items: the configured first-item
+	 * amount plus the additional-item amount for each one after it.
+	 *
+	 * @param int $qty Item quantity.
+	 * @return float
+	 */
+	private function fallback_cost( $qty ) {
+		$qty = max( 0, (int) $qty );
+		if ( 0 === $qty ) {
+			return 0.0;
+		}
+		$first      = (float) wc_format_decimal( $this->get_option( 'fallback_first', '5.99' ) );
+		$additional = (float) wc_format_decimal( $this->get_option( 'fallback_additional', '2.50' ) );
+		return $first + ( $additional * ( $qty - 1 ) );
+	}
+
+	/**
+	 * How many units in the cart ApparelHub reported it could not match.
+	 *
+	 * @param array $items  Items sent to ApparelHub (sku + quantity).
+	 * @param array $result Decoded rate response.
+	 * @return int
+	 */
+	private function unmapped_quantity( $items, $result ) {
+		if ( empty( $result['unmapped_skus'] ) || ! is_array( $result['unmapped_skus'] ) ) {
+			return 0;
+		}
+		$unmapped = array_map( 'strval', $result['unmapped_skus'] );
+		$qty      = 0;
+		foreach ( $items as $item ) {
+			if ( in_array( (string) $item['sku'], $unmapped, true ) ) {
+				$qty += (int) $item['quantity'];
+			}
+		}
+		return $qty;
+	}
+
+	/**
 	 * Add the local flat fallback rate.
 	 *
 	 * @param array $package   Shipping package.
@@ -261,13 +324,8 @@ class ApparelHub_Shipping_Method extends WC_Shipping_Method {
 	 * @return void
 	 */
 	private function add_fallback_rate( $package, $total_qty ) {
-		$first      = (float) wc_format_decimal( $this->get_option( 'fallback_first', '5.99' ) );
-		$additional = (float) wc_format_decimal( $this->get_option( 'fallback_additional', '2.50' ) );
-		$extra      = max( 0, (int) $total_qty - 1 );
-		$cost       = $first + ( $additional * $extra );
-
 		$this->add_apparelhub_rate(
-			$cost,
+			$this->fallback_cost( $total_qty ),
 			$package,
 			array( 'apparelhub_fallback_used' => true )
 		);
