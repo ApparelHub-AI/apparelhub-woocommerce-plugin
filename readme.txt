@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 7.0
 WC tested up to: 11.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,11 @@ Yes. The per-provider logic applies to whichever provider your products come fro
 
 == Changelog ==
 
+= 1.0.3 =
+* The Test connection button's script now loads as a proper enqueued file instead of inline in the page.
+* Remove the manual translation loader; WordPress loads translations for directory-hosted plugins automatically.
+* Declare WooCommerce as a required plugin, so WordPress 6.5+ prompts for it before activation.
+
 = 1.0.2 =
 * Fix: items ApparelHub could not match to one of its products were quoted free shipping. They are now charged the flat fallback rate, and the unmatched SKUs are written to the debug log so you can correct them.
 * Document the ApparelHub API connection in full, including exactly what data is sent and when.
@@ -125,6 +130,9 @@ Yes. The per-provider logic applies to whichever provider your products come fro
 * Initial release: live Printful rates and flat Printify rate at WooCommerce checkout, with a flat fallback.
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Housekeeping release with no change in behaviour. Safe to update.
 
 = 1.0.2 =
 Fixes free shipping being quoted for products ApparelHub could not match. Recommended for all users.

@@ -101,46 +101,41 @@ class ApparelHub_Shipping_Settings {
 	}
 
 	/**
-	 * Custom field: a "Test connection" button + result area + inline script.
+	 * Custom field: a "Test connection" button and a result area.
+	 *
+	 * The button's behaviour lives in assets/js/settings.js, enqueued here so it
+	 * only loads on this tab. It prints in the footer, after the button exists.
 	 *
 	 * @return void
 	 */
 	public function render_test_connection() {
-		$nonce = wp_create_nonce( 'apparelhub_shipping_test' );
+		wp_enqueue_script(
+			'apparelhub-shipping-settings',
+			APPARELHUB_SHIPPING_URL . 'assets/js/settings.js',
+			array(),
+			APPARELHUB_SHIPPING_VERSION,
+			true
+		);
+		wp_localize_script(
+			'apparelhub-shipping-settings',
+			'apparelhubShippingSettings',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'nonce'   => wp_create_nonce( 'apparelhub_shipping_test' ),
+				'i18n'    => array(
+					'testing'     => __( 'Testing...', 'apparelhub-shipping' ),
+					'ok'          => __( 'OK', 'apparelhub-shipping' ),
+					'failed'      => __( 'Failed', 'apparelhub-shipping' ),
+					'unreachable' => __( 'Could not reach the site. Try again.', 'apparelhub-shipping' ),
+				),
+			)
+		);
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc"><?php echo esc_html__( 'Connection', 'apparelhub-shipping' ); ?></th>
 			<td class="forminp">
 				<button type="button" class="button" id="apparelhub-shipping-test"><?php echo esc_html__( 'Test connection', 'apparelhub-shipping' ); ?></button>
 				<span id="apparelhub-shipping-test-result" style="margin-left:10px;"></span>
-				<script>
-				( function () {
-					var btn = document.getElementById( 'apparelhub-shipping-test' );
-					if ( ! btn ) { return; }
-					btn.addEventListener( 'click', function () {
-						var result = document.getElementById( 'apparelhub-shipping-test-result' );
-						var urlEl = document.getElementById( 'apparelhub_shipping_base_url' );
-						var tokenEl = document.getElementById( 'apparelhub_shipping_token' );
-						result.textContent = <?php echo wp_json_encode( __( 'Testing...', 'apparelhub-shipping' ) ); ?>;
-						result.style.color = '';
-						var data = new FormData();
-						data.append( 'action', 'apparelhub_shipping_test_connection' );
-						data.append( 'nonce', <?php echo wp_json_encode( $nonce ); ?> );
-						data.append( 'base_url', urlEl ? urlEl.value : '' );
-						data.append( 'token', tokenEl ? tokenEl.value : '' );
-						fetch( ajaxurl, { method: 'POST', credentials: 'same-origin', body: data } )
-							.then( function ( r ) { return r.json(); } )
-							.then( function ( json ) {
-								result.textContent = json.data && json.data.message ? json.data.message : ( json.success ? 'OK' : 'Failed' );
-								result.style.color = json.success ? '#1a7f37' : '#b32d2e';
-							} )
-							.catch( function () {
-								result.textContent = <?php echo wp_json_encode( __( 'Could not reach the site. Try again.', 'apparelhub-shipping' ) ); ?>;
-								result.style.color = '#b32d2e';
-							} );
-					} );
-				} )();
-				</script>
 			</td>
 		</tr>
 		<?php

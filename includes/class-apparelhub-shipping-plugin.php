@@ -35,11 +35,12 @@ final class ApparelHub_Shipping_Plugin {
 	}
 
 	/**
-	 * Constructor: load textdomain and either boot or show a dependency notice.
+	 * Constructor: boot, or show a dependency notice if WooCommerce is missing.
+	 *
+	 * Translations need no loader: WordPress.org-hosted plugins have them
+	 * loaded automatically for their slug (WordPress 4.6+).
 	 */
 	private function __construct() {
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		if ( ! $this->woocommerce_active() ) {
 			add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
 			return;
@@ -54,15 +55,6 @@ final class ApparelHub_Shipping_Plugin {
 		if ( is_admin() ) {
 			new ApparelHub_Shipping_Settings();
 		}
-	}
-
-	/**
-	 * Load translations.
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( 'apparelhub-shipping', false, dirname( plugin_basename( APPARELHUB_SHIPPING_FILE ) ) . '/languages' );
 	}
 
 	/**
