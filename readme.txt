@@ -114,6 +114,7 @@ Yes. The per-provider logic applies to whichever provider your products come fro
 = 1.0.3 =
 * The Test connection button's script now loads as a proper enqueued file instead of inline in the page.
 * Remove the manual translation loader; WordPress loads translations for directory-hosted plugins automatically.
+* Declare WooCommerce as a required plugin, so WordPress 6.5+ prompts for it before activation.
 
 = 1.0.2 =
 * Fix: items ApparelHub could not match to one of its products were quoted free shipping. They are now charged the flat fallback rate, and the unmatched SKUs are written to the debug log so you can correct them.

@@ -11,6 +11,7 @@
  * Text Domain:       apparelhub-shipping
  * Requires at least: 6.0
  * Requires PHP:      7.4
+ * Requires Plugins:  woocommerce
  * WC requires at least: 7.0
  * WC tested up to:   11.1
  *
@@ -70,9 +71,9 @@ add_action(
 );
 
 /**
- * Activation: seed default options. The WooCommerce dependency is enforced at
- * runtime (admin notice) rather than blocking activation, so the merchant can
- * activate this and WooCommerce in any order.
+ * Activation: seed default options. On WordPress 6.5+ the Requires Plugins
+ * header makes WordPress require WooCommerce before this can be activated; on
+ * older versions the runtime admin notice covers a missing WooCommerce.
  */
 register_activation_hook(
 	__FILE__,
