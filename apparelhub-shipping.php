@@ -3,13 +3,12 @@
  * Plugin Name:       ApparelHub Shipping
  * Plugin URI:        https://github.com/ApparelHub-AI/apparelhub-woocommerce-plugin
  * Description:       Live shipping rates at checkout for ApparelHub products. Printful items are auto calculated from live rates; Printify items use a flat rate you configure in ApparelHub. A configurable flat fallback keeps checkout working if the rate service is briefly unreachable.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Author:            ApparelHub
  * Author URI:        https://apparelhub.ai
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       apparelhub-shipping
- * Domain Path:       /languages
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * WC requires at least: 7.0
@@ -20,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'APPARELHUB_SHIPPING_VERSION', '1.0.2' );
+define( 'APPARELHUB_SHIPPING_VERSION', '1.0.3' );
 define( 'APPARELHUB_SHIPPING_FILE', __FILE__ );
 define( 'APPARELHUB_SHIPPING_PATH', plugin_dir_path( __FILE__ ) );
 define( 'APPARELHUB_SHIPPING_URL', plugin_dir_url( __FILE__ ) );
